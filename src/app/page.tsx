@@ -29,7 +29,6 @@ export default function Home() {
       }
 
       const { data } = (await res.json()) as { data: { results: TMDBResult[] } };
-      console.log({data})
       setMovies(data.results);
     } catch (err: any) {
       setError(err.message);
