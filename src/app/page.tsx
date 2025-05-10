@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import type { dataType } from '@/types';
 import RenderProvidersComponent from '@/app/components/renderproviders';
@@ -12,6 +12,34 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // fetch popular movies at page load if title is empty
+  useEffect(() => {
+    if (title === '') {
+      const fetchPopularMovies = async () => {
+        setLoading(true);
+        setError(null);
+        setMovies([]);
+
+        try {
+          const url = new URL('/api/imdb', window.location.origin);
+          const res = await fetch(url.toString());
+          if (!res.ok) {
+            const { message } = await res.json();
+            throw new Error(message || res.statusText);
+          }
+          const { treatedData } = (await res.json()) as { treatedData: dataType[] };
+          setMovies(treatedData);
+        } catch (err: any) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchPopularMovies();
+    }
+  }, [title]);
+
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -21,6 +49,7 @@ export default function Home() {
     try {
       const url = new URL('/api/imdb', window.location.origin);
       url.searchParams.set('name', title);
+
 
       const res = await fetch(url.toString());
       if (!res.ok) {
