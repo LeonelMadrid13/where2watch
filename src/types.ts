@@ -1,3 +1,13 @@
+export type dataType = {
+    id: number;
+    title: string;
+    providers?: {
+        [countryCode: string]: Ad | Ao;
+    };
+    poster_path: string;
+    rating: number;
+}
+
 export type TMDBRespose = {
     page: number;
     results: TMDBResult[];

@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import type { TMDBResult } from '@/types';
+import type { dataType } from '@/types';
 
 interface RenderProvidersComponentProps {
-    movie: TMDBResult;
+    movie: dataType;
 }
 
 const RenderProvidersComponent: React.FC<RenderProvidersComponentProps> = ({ movie }) => {

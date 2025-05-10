@@ -3,12 +3,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import type { TMDBResult } from '@/types';
+import type { dataType } from '@/types';
 import RenderProvidersComponent from '@/app/components/renderproviders';
 
 export default function Home() {
   const [title, setTitle] = useState('');
-  const [movies, setMovies] = useState<TMDBResult[]>([]);
+  const [movies, setMovies] = useState<dataType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -27,9 +27,8 @@ export default function Home() {
         const { message } = await res.json();
         throw new Error(message || res.statusText);
       }
-
-      const { data } = (await res.json()) as { data: { results: TMDBResult[] } };
-      setMovies(data.results);
+      const { treatedData } = (await res.json()) as { treatedData: dataType[] };
+      setMovies(treatedData);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -68,7 +67,7 @@ export default function Home() {
           <div key={movie.id} className="bg-[#d8d8d8] rounded-lg shadow overflow-hidden flex flex-col">
             <Image
               src={movie.poster_path!}
-              alt={movie.original_title}
+              alt={movie.title}
               width={240}
               height={360}
               className="h-60 p-2 w-90"
@@ -76,8 +75,8 @@ export default function Home() {
               unoptimized
             />
             <div className="p-4 flex-1 flex flex-col">
-              <h2 className="text-lg font-semibold mb-2 flex-1">{movie.original_title}</h2>
-              <p className="text-sm mb-2">⭐ {movie.vote_average}</p>
+              <h2 className="text-lg font-semibold mb-2 flex-1">{movie.title}</h2>
+              <p className="text-sm mb-2">⭐ {movie.rating}</p>
             </div>
             <div className="p-4 bg-gray-200 flex flex-col">
               <h3 className="text-md font-semibold mb-2">Proveedores</h3>
