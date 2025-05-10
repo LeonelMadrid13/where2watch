@@ -79,7 +79,7 @@ export default function Home() {
         />
         <button
           type="submit"
-          disabled={loading || !title.trim()}
+          disabled={loading}
           className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
         >
           {loading ? 'Buscando…' : 'Buscar'}
