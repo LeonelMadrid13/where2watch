@@ -1,6 +1,10 @@
 export type dataType = {
     id: number;
     title: string;
+    description: string;
+    release_date: string;
+    genres: string[];
+    runtime: number;
     providers?: {
         [countryCode: string]: Ad | Ao;
     };

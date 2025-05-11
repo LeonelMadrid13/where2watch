@@ -1,3 +1,4 @@
+// src/app/components/ui/renderproviders.tsx
 import React from 'react';
 import Image from 'next/image';
 import type { dataType } from '@/types';

@@ -1,10 +1,10 @@
+// src/app/page.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import type { dataType } from '@/types';
-import RenderProvidersComponent from '@/app/components/renderproviders';
+import MovieDetailsComponent from '@/components/ui/moviedetailscard';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -90,30 +90,8 @@ export default function Home() {
       {!loading && movies.length === 0 && !error && (
         <p className="text-gray-500">Sin resultados</p>
       )}
+      <MovieDetailsComponent movies={movies} />
 
-      <div className="grid gap-4 w-full text-black grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
-        {movies.map((movie) => (
-          <div key={movie.id} className="bg-[#d8d8d8] rounded-lg shadow overflow-hidden flex flex-col">
-            <Image
-              src={movie.poster_path!}
-              alt={movie.title}
-              width={240}
-              height={360}
-              className="h-60 p-2 w-90"
-              style={{ objectFit: 'cover' }}
-              unoptimized
-            />
-            <div className="p-4 flex-1 flex flex-col">
-              <h2 className="text-lg font-semibold mb-2 flex-1">{movie.title}</h2>
-              <p className="text-sm mb-2">⭐ {movie.rating}</p>
-            </div>
-            <div className="p-4 bg-gray-200 flex flex-col">
-              <h3 className="text-md font-semibold mb-2">Proveedores</h3>
-              <RenderProvidersComponent movie={movie} />
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

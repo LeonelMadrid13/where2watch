@@ -3,6 +3,27 @@ export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import type { TMDBRespose } from '@/types';
+const genres: Record<number, string> = {
+    28: "Action",
+    12: "Adventure",
+    16: "Animation",
+    35: "Comedy",
+    80: "Crime",
+    99: "Documentary",
+    18: "Drama",
+    10751: "Family",
+    14: "Fantasy",
+    36: "History",
+    27: "Horror",
+    10402: "Music",
+    9648: "Mystery",
+    10749: "Romance",
+    878: "Science Fiction",
+    10770: "TV Movie",
+    53: "Thriller",
+    10752: "War",
+    37: "Western"
+  };
 
 const searchOptions: RequestInit = {
     method: 'GET',
@@ -21,7 +42,6 @@ async function fetcher(url: string, options: RequestInit) {
 const treatData = async (searchUrl:string) => {
     try {
         const data: TMDBRespose = await fetcher(searchUrl, searchOptions);
-        console.log({ data})
         for (const movie of data.results) {
             movie.poster_path = `https://media.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`;
             const providersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`
@@ -29,15 +49,19 @@ const treatData = async (searchUrl:string) => {
             movie.providers = providers.results;
         }
         const treatedData = data.results.map((movie) => {
-            console.log({ movie });
+            const genreNames = movie.genre_ids.map((id) => genres[id]);
             return { 
                 id: movie.id,
-                title: movie.original_title, 
+                title: movie.original_title,
+                description: movie.overview,
+                release_date: movie.release_date,
+                genres: genreNames,
                 providers: movie.providers,
                 poster_path: movie.poster_path,
                 rating: movie.vote_average
             };
         });
+        console.log({ treatedData });
         return NextResponse.json({ treatedData }, { status: 200 });
     } catch (err: unknown) {
         const message =
