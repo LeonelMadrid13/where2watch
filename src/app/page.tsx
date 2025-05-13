@@ -11,7 +11,6 @@ export default function Home() {
   const [movies, setMovies] = useState<dataType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
 
   // fetch popular movies at page load if title is empty
   useEffect(() => {
