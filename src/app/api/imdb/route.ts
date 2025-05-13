@@ -43,10 +43,11 @@ const treatData = async (searchUrl:string) => {
     try {
         const data: TMDBRespose = await fetcher(searchUrl, searchOptions);
         for (const movie of data.results) {
-            movie.poster_path = `https://media.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`;
+            movie.poster_path = `https://media.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`;
             const providersUrl = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`
             const providers = await fetcher(providersUrl, searchOptions)
             movie.providers = providers.results;
+            console.log({ movie })
         }
         const treatedData = data.results.map((movie) => {
             const genreNames = movie.genre_ids.map((id) => genres[id]);

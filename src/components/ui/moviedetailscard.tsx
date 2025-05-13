@@ -1,7 +1,7 @@
 import { dataType } from '@/types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import Image from 'next/image';
 import RenderProvidersComponent from '@/components/ui/renderproviders';
+import FallbackImage from '@/components/ui/FallbackImage';
 
 interface RenderComponentProps {
     movies: dataType[];
@@ -13,13 +13,13 @@ const MovieDetailsComponent: React.FC<RenderComponentProps> = ({ movies }) => {
             {movies.map((movie) => (
                 <Dialog key={movie.id}>
                     <DialogTrigger asChild>
-                        <div className="bg-[#d8d8d8] rounded-lg shadow overflow-hidden flex flex-col cursor-pointer">
-                            <Image
-                                src={movie.poster_path!}
+                        <div className="bg-[#d8d8d8] rounded-lg shadow overflow-hidden flex flex-col cursor-pointer hover:scale-[1.01] transition-transform">
+                            <FallbackImage
+                                src={movie.poster_path || '/no-image.png'}
                                 alt={movie.title}
                                 width={240}
                                 height={360}
-                                className="h-60 p-2 w-90 object-cover"
+                                className="h-60 p-2 w-full object-cover"
                                 unoptimized
                             />
                             <div className="p-4 flex-1 flex flex-col">
@@ -33,16 +33,16 @@ const MovieDetailsComponent: React.FC<RenderComponentProps> = ({ movies }) => {
                         </div>
                     </DialogTrigger>
 
-                    <DialogContent className="max-w-3xl">
+                    <DialogContent className="max-w-3xl w-full md:max-w-4xl">
                         <DialogHeader>
                             <DialogTitle className="text-2xl mb-4">{movie.title}</DialogTitle>
                         </DialogHeader>
 
                         <div className="flex flex-col md:flex-row gap-6">
                             {/* Movie Image */}
-                            <div className="flex-shrink-0">
-                                <Image
-                                    src={movie.poster_path!}
+                            <div className="flex-shrink-0 mx-auto md:mx-0">
+                                <FallbackImage
+                                    src={movie.poster_path || '/no-image.png'}
                                     alt={movie.title}
                                     width={240}
                                     height={360}
